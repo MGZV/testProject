@@ -1,20 +1,32 @@
 import requests
 
+login = {
+    "apiLogin": "874af36d"
+}
+
 
 def get_access():
-    header = {"apiLogin": "874af36d"}
     url = 'https://api-ru.iiko.services/api/1/access_token'
-    access = requests.post(url, json=header)
+    access = requests.post(url, json={
+    "apiLogin": "874af36d"
+})
     if access.status_code == 200:
         return access.json()
     else:
         return access.status_code
 
+token = {
+"correlationId": "48fb4cd3-2ef6-4479-bea1-7c92721b988c",
+"token": "string"
+}
+
+get_access()['token']
+
 
 def get_organization():
     token = get_access()['token']
     header = {"Authorization": f"Bearer {token}"}
-    json = { }
+    json = {}
     url = 'https://api-ru.iiko.services/api/1/organizations'
     organization = requests.post(url, headers=header, json=json)
     if organization.status_code == 200:
@@ -33,10 +45,10 @@ def get_terminal():  # 1 Получить список терминалов
         json = {"organizationIds": org}
         url = 'https://api-ru.iiko.services/api/1/terminal_groups'
         terminal = requests.post(url=url, headers=header, json=json)
-        print(terminal.json())
+        # print(terminal.json())
         if terminal.status_code == 200:
             for term in terminal.json()['terminalGroups']:
-                print(term)
+                # print(term)
                 terminal_list.append(term['items'][0]['id'])
             return terminal_list
         else:
@@ -200,8 +212,8 @@ def create_products():  # 4 Создать заказ
 # term_result = get_organization()
 # print(term_result)
 
-# term_result = create_products()
-# print(term_result)
+term_result = create_products()
+print(term_result)
 #
 # customer_category = get_customer_category()
 # print(customer_category)
